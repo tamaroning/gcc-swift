@@ -1,0 +1,78 @@
+GCCSWIFT_INSTALL_NAME := $(shell echo gccswift|sed '$(program_transform_name)')
+GCCSWIFT_TARGET_INSTALL_NAME := $(target_noncanonical)-$(shell echo gccswift|sed '$(program_transform_name)')
+
+swift: swift1$(exeext)
+
+.PHONY: swift
+
+# Driver
+
+GCCSWIFT_OBJS = \
+   $(GCC_OBJS) \
+   swift/swiftspec.o \
+   $(END)
+
+gccswift$(exeext): $(GCCSWIFT_OBJS) $(EXTRA_GCC_OBJS) libcommon-target.a $(LIBDEPS)
+	+$(LINKER) $(ALL_LINKERFLAGS) $(LDFLAGS) -o $@ \
+	  $(GCCSWIFT_OBJS) $(EXTRA_GCC_OBJS) libcommon-target.a \
+	  $(EXTRA_GCC_LIBS) $(LIBS)
+
+# The compiler proper
+
+swift_OBJS = \
+    swift/swift1.o \
+    $(END)
+
+swift1$(exeext): attribs.o $(swift_OBJS) $(BACKEND) $(LIBDEPS)
+	+$(LLINKER) $(ALL_LINKERFLAGS) $(LDFLAGS) -o $@ \
+	      attribs.o $(swift_OBJS) $(BACKEND) $(LIBS) $(BACKENDLIBS)
+
+swift.all.cross:
+
+swift.start.encap: gccswift$(exeext)
+swift.rest.encap:
+
+swift.install-common: installdirs
+	-rm -f $(DESTDIR)$(bindir)/$(GCCSWIFT_INSTALL_NAME)$(exeext)
+	$(INSTALL_PROGRAM) gccswift$(exeext) $(DESTDIR)$(bindir)/$(GCCSWIFT_INSTALL_NAME)$(exeext)
+	rm -f $(DESTDIR)$(bindir)/$(GCCSWIFT_TARGET_INSTALL_NAME)$(exeext); \
+	( cd $(DESTDIR)$(bindir) && \
+      $(LN) $(GCCSWIFT_INSTALL_NAME)$(exeext) $(GCCSWIFT_TARGET_INSTALL_NAME)$(exeext) ); \
+
+# Required goals, they still do nothing
+swift.install-man:
+swift.install-info:
+swift.install-pdf:
+swift.install-plugin:
+swift.install-html:
+swift.info:
+swift.dvi:
+swift.pdf:
+swift.html:
+swift.man:
+swift.mostlyclean:
+swift.clean:
+swift.distclean:
+swift.maintainer-clean:
+
+# No swift-specific selftests.
+selftest-swift:
+
+# make uninstall
+swift.uninstall:
+	-rm -f gccswift$(exeext) swift1$(exeext)
+	-rm -f $(swift_OBJS)
+
+# Used for handling bootstrap
+swift.stage1: stage1-start
+	-mv swift/*$(objext) stage1/swift
+swift.stage2: stage2-start
+	-mv swift/*$(objext) stage2/swift
+swift.stage3: stage3-start
+	-mv swift/*$(objext) stage3/swift
+swift.stage4: stage4-start
+	-mv swift/*$(objext) stage4/swift
+swift.stageprofile: stageprofile-start
+	-mv swift/*$(objext) stageprofile/swift
+swift.stagefeedback: stagefeedback-start
+	-mv swift/*$(objext) stagefeedback/swift

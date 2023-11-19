@@ -1,0 +1,8 @@
+language="swift"
+compilers="swift1\$(exeext)"
+
+target_libs=""
+
+gtfiles="\$(srcdir)/swift/swift1.cc"
+
+build_by_default="no"
