@@ -1,18 +1,20 @@
-#include "convert.h"
-#include "coretypes.h"
-#include "debug.h"
-#include "diagnostic.h"
-#include "fold-const.h"
-#include "gimple-expr.h"
-#include "gimplify.h"
-#include "langhooks-def.h"
-#include "langhooks.h"
-#include "opts.h"
-#include "selftest.h"
-#include "stor-layout.h"
+// clang-format off
 #include "swift-system.h"
+#include "coretypes.h"
 #include "target.h"
 #include "tree.h"
+#include "gimple-expr.h"
+#include "diagnostic.h"
+#include "opts.h"
+#include "fold-const.h"
+#include "gimplify.h"
+#include "stor-layout.h"
+#include "debug.h"
+#include "convert.h"
+#include "langhooks.h"
+#include "langhooks-def.h"
+#include "selftest.h"
+// clang-format on
 
 #include <mpfr.h>
 

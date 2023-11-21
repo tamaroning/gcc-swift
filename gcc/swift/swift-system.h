@@ -53,12 +53,14 @@
  * system.h. */
 #include <iostream>
 
+// clang-format off
+#include "system.h"
 #include "ansidecl.h"
 #include "coretypes.h"
-#include "system.h"
 
 #include "diagnostic-core.h" /* For error_at and friends.  */
 #include "intl.h"            /* For _().  */
+// clang-format on
 
 #define SWIFT_ATTRIBUTE_NORETURN ATTRIBUTE_NORETURN
 
