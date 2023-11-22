@@ -31,6 +31,7 @@
 #define __STDC_FORMAT_MACROS
 
 // These must be included before the #poison declarations in system.h.
+#include <cstring>
 #include <deque>
 #include <fstream>
 #include <functional>

@@ -18,6 +18,46 @@
 
 #include <mpfr.h>
 
+#include "swift-lex.h"
+
+namespace Swift {
+static void parse_file(const char *filename) {
+  FILE *file = fopen(filename, "r");
+  if (file == NULL) {
+    fatal_error(UNKNOWN_LOCATION, "cannot open filename %s: %m", filename);
+  }
+
+  Lexer lex(filename, file);
+
+  const_TokenPtr tok = lex.peek_token();
+  for (;;) {
+    location_t loc = tok->get_locus();
+    bool has_text =
+        tok->get_id() == IDENTIFIER || tok->get_id() == INTEGER_LITERAL ||
+        tok->get_id() == FLOAT_LITERAL || tok->get_id() == STRING_LITERAL;
+
+    fprintf(stderr, "<id=%s%s, %s, line=%d, col=%d>\n",
+            tok->token_id_to_str().data(),
+            has_text ? (std::string(", text=") + tok->get_str()).c_str() : "",
+            LOCATION_FILE(loc), LOCATION_LINE(loc), LOCATION_COLUMN(loc));
+
+    if (tok->get_id() == END_OF_FILE)
+      break;
+
+    lex.skip_token();
+    tok = lex.peek_token();
+  }
+
+  fclose(file);
+}
+
+static void parse_files(int num_files, const char **files) {
+  for (int i = 0; i < num_files; i++) {
+    parse_file(files[i]);
+  }
+}
+} // namespace Swift
+
 /* Language-dependent contents of a type.  */
 
 struct GTY(()) lang_type {
@@ -70,7 +110,7 @@ static bool swift_langhook_init(void) {
 }
 
 static void swift_langhook_parse_file(void) {
-  fprintf(stderr, "Hello gccswift!\n");
+  Swift::parse_files(num_in_fnames, in_fnames);
 }
 
 static tree swift_langhook_type_for_mode(enum machine_mode mode,
