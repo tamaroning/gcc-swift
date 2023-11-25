@@ -23,6 +23,7 @@ swift_OBJS = \
     swift/swift1.o \
 	swift/swift-lex.o \
 	swift/swift-token.o \
+	swift/swift-parse.o \
     $(END)
 
 swift1$(exeext): attribs.o $(swift_OBJS) $(BACKEND) $(LIBDEPS)

@@ -83,4 +83,6 @@ extern void swift_preserve_from_gc(tree t);
 
 extern const char *swift_localize_identifier(const char *ident);
 
+#define swift_debug(...) (printf("[debug] "), printf(__VA_ARGS__), printf("\n"))
+
 #endif // !defined(SWIFT_SYSTEM_H)

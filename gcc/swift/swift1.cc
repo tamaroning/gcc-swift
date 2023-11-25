@@ -18,11 +18,20 @@
 
 #include <mpfr.h>
 
-#include "swift-lex.h"
+#include "swift-parse.h"
 
 namespace Swift {
 static void parse_file(const char *filename) {
   FILE *file = fopen(filename, "r");
+
+  Lexer lexer = Lexer(filename, file);
+  Parser parser(lexer);
+
+  std::shared_ptr<TopLevelCodeDecl> ast = parser.parse_program();
+  if (ast == nullptr) {
+    fatal_error(UNKNOWN_LOCATION, "cannot parse file %s", filename);
+  }
+  /*
   if (file == NULL) {
     fatal_error(UNKNOWN_LOCATION, "cannot open filename %s: %m", filename);
   }
@@ -47,6 +56,7 @@ static void parse_file(const char *filename) {
     lex.skip_token();
     tok = lex.peek_token();
   }
+  */
 
   fclose(file);
 }

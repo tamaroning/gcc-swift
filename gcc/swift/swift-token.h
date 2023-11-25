@@ -35,6 +35,7 @@ typedef std::shared_ptr<const Token> const_TokenPtr;
   SWIFT_TOKEN(STRING_LITERAL, "string literal")                                \
                                                                                \
   SWIFT_TOKEN_KEYWORD(LET, "let")                                              \
+  SWIFT_TOKEN_KEYWORD(VAR, "var")                                              \
   SWIFT_TOKEN_KEYWORD(IF, "if")                                                \
   SWIFT_TOKEN_KEYWORD(ELSE, "else")                                            \
   SWIFT_TOKEN_KEYWORD(FOR, "for")                                              \
@@ -58,6 +59,10 @@ enum TokenId {
 #undef SWIFT_TOKEN_KEYWORD
 #undef SWIFT_TOKEN
 };
+
+std::string_view get_token_description(TokenId tid);
+
+std::string_view token_id_to_str(TokenId tid);
 
 struct Token {
 private:
