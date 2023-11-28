@@ -1,3 +1,5 @@
+#pragma once
+
 #include "swift-system.h"
 #include <memory>
 

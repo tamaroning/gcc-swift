@@ -1,3 +1,5 @@
+#pragma once
+
 #include "swift-ast.h"
 #include "swift-lex.h"
 #include "swift-system.h"
